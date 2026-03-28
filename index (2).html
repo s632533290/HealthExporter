@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康数据随手查 - 支持与帮助</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --color-bg: #f8f9fa;
+            --color-surface: #ffffff;
+            --color-text: #1a1a2e;
+            --color-text-muted: #6b7280;
+            --color-primary: #0891b2;
+            --color-primary-hover: #0e7490;
+            --color-border: rgba(0,0,0,0.08);
+            --color-accent-bg: #ecfeff;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+
+        .app-icon {
+            width: 88px;
+            height: 88px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #22d3ee 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(8, 145, 178, 0.3);
+        }
+
+        .app-icon svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: var(--color-text-muted);
+            font-size: 15px;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-left: 12px;
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .card {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 28px;
+            margin-bottom: 16px;
+        }
+
+        /* Features */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .feature-item {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        .feature-item .icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-item h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .feature-item p {
+            font-size: 13px;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        /* FAQ */
+        .faq-item {
+            border-bottom: 1px solid var(--color-border);
+            padding: 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            padding: 18px 0;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .faq-question:hover {
+            color: var(--color-primary);
+        }
+
+        .faq-question .arrow {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            margin-left: 12px;
+            transition: transform 0.25s ease;
+            color: var(--color-text-muted);
+        }
+
+        .faq-item.active .faq-question .arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer-inner {
+            padding-bottom: 18px;
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+        }
+
+        /* Contact */
+        .contact-card {
+            background: var(--color-accent-bg);
+            border-radius: var(--radius);
+            padding: 28px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .contact-card p {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 16px;
+        }
+
+        .email-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--color-primary);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .email-btn:hover {
+            background: var(--color-primary-hover);
+        }
+
+        /* Privacy */
+        .privacy-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .privacy-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 14px;
+            color: var(--color-text-muted);
+        }
+
+        .privacy-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 32px 0 48px;
+            font-size: 13px;
+            color: var(--color-text-muted);
+        }
+
+        footer p + p {
+            margin-top: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 560px) {
+            header { padding: 36px 0 32px; }
+            h1 { font-size: 24px; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .card { padding: 20px; }
+            .contact-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="app-icon">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 6C18 6 14 10 14 14C14 18 16 20 16 24C16 28 13 32 13 32H35C35 32 32 28 32 24C32 20 34 18 34 14C34 10 30 6 24 6Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M8 18H12M36 18H40M10 28H14M34 28H38" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M20 32V34C20 36.2 21.8 38 24 38C26.2 38 28 36.2 28 34V32" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="24" cy="20" r="3" stroke="white" stroke-width="2" fill="none"/>
+                    <path d="M24 14V17M24 23V26" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+            </div>
+            <h1>健康数据随手查</h1>
+            <p class="subtitle">轻松查看和导出 iPhone 与 Apple Watch 健康数据</p>
+        </header>
+
+        <!-- Features -->
+        <section>
+            <h2>功能介绍</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <span class="icon">📊</span>
+                    <h3>全面数据导出</h3>
+                    <p>支持心率、步数、睡眠、血氧、运动记录等多种健康数据，导出为标准 CSV 格式。</p>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📅</span>
+                    <h3>灵活时间范围</h3>
+                    <p>最近 7 天、30 天、1 年或全部数据，也可自定义起止日期精确筛选。</p>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📈</span>
+                    <h3>内置数据分析</h3>
+                    <p>在 App 内直接查看心率趋势、运动统计、睡眠分析等可视化图表。</p>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🔒</span>
+                    <h3>隐私至上</h3>
+                    <p>所有数据处理均在设备本地完成，不上传到任何服务器，安全可靠。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section>
+            <h2>常见问题</h2>
+            <div class="card">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>支持导出哪些健康数据？</span>
+                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                    </button>
+                    <div class="faq-answer"><div class="faq-answer-inner">
+                        支持导出 Apple 健康中记录的绝大多数数据类型，包括但不限于：心率、静息心率、步数、距离、活动能量、血氧饱和度、心率变异性（HRV）、呼吸频率、体温、身高体重、睡眠分析、正念冥想，以及跑步、骑行、游泳、力量训练等各类运动记录。
+                    </div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>导出的 CSV 文件怎么打开？</span>
+                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                    </button>
+                    <div class="faq-answer"><div class="faq-answer-inner">
+                        CSV 是一种通用的表格数据格式，可以用 Microsoft Excel、Apple Numbers、Google Sheets、WPS 等软件直接打开。你也可以使用 Python、R 等编程工具对数据进行更深入的分析和可视化。
+                    </div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>需要 Apple Watch 才能使用吗？</span>
+                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                    </button>
+                    <div class="faq-answer"><div class="faq-answer-inner">
+                        不需要。只要你的 iPhone 上有 Apple 健康 App 并记录了数据，就可以使用本应用。如果你同时佩戴了 Apple Watch，那么 Watch 记录的心率、血氧、运动等更丰富的数据也会一并支持导出。
+                    </div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>我的数据安全吗？</span>
+                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                    </button>
+                    <div class="faq-answer"><div class="faq-answer-inner">
+                        绝对安全。本应用不收集任何用户数据，不包含任何第三方数据追踪或分析 SDK。所有健康数据的读取、分析和导出均在你的 iPhone 本地完成，不会经过任何外部服务器。
+                    </div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>为什么看不到某些数据？</span>
+                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                    </button>
+                    <div class="faq-answer"><div class="faq-answer-inner">
+                        请确认你在首次打开 App 时已授权访问对应的健康数据类型。你可以前往 iPhone 的"设置" → "隐私与安全性" → "健康" → "健康数据随手查"，检查并开启需要读取的数据权限。如果某类数据本身没有记录（如没有佩戴 Apple Watch 则不会有血氧数据），则不会显示。
+                    </div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section>
+            <h2>联系我们</h2>
+            <div class="contact-card">
+                <p>如果你在使用过程中遇到任何问题，或者有功能建议，欢迎通过邮件联系我们。我们会尽快回复。</p>
+                <a href="mailto:s632533290@gmail.com" class="email-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13L2 4"/></svg>
+                    s632533290@gmail.com
+                </a>
+            </div>
+        </section>
+
+        <!-- Privacy -->
+        <section>
+            <h2>隐私政策</h2>
+            <div class="card">
+                <p style="margin-bottom:16px; font-size:14px; color:var(--color-text-muted);">
+                    我们非常重视你的隐私。以下是我们对用户数据的处理原则：
+                </p>
+                <ul class="privacy-list">
+                    <li>本应用不收集、不存储、不上传任何用户个人信息或健康数据</li>
+                    <li>所有健康数据均通过 Apple HealthKit 接口在设备本地读取和处理</li>
+                    <li>导出的 CSV 文件仅保存在你选择的本地位置，不经过任何外部服务器</li>
+                    <li>本应用不包含任何第三方广告、数据追踪或分析 SDK</li>
+                    <li>本应用不要求用户注册账号，不收集邮箱、手机号等个人联系信息</li>
+                    <li>我们不会以任何方式将你的数据出售或分享给第三方</li>
+                </ul>
+                <p style="margin-top:16px; font-size:13px; color:var(--color-text-muted);">
+                    如你对隐私政策有任何疑问，请通过上方邮箱联系我们。
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 健康数据随手查. All rights reserved.</p>
+            <p>本页面最后更新于 2026 年 3 月</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleFaq(btn) {
+            const item = btn.parentElement;
+            const wasActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            if (!wasActive) item.classList.add('active');
+        }
+    </script>
+</body>
+</html>
