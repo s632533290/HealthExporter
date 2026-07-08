@@ -1,410 +1,1107 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>健康数据随手查 - 支持与帮助</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HealthExport Local | Export Apple Health data for AI, locally</title>
+  <meta name="description" content="HealthExport Local turns Apple Health data into CSV files and AI-ready local summaries. No account, no AI API call, no health data upload.">
+  <meta property="og:title" content="HealthExport Local">
+  <meta property="og:description" content="Export Apple Health data for AI, locally. CSV files and AI-ready summaries generated on device.">
+  <meta property="og:image" content="https://s632533290.github.io/HealthExporter/assets/product-hunt/gallery/01-portable-apple-health-data.png">
+  <meta name="theme-color" content="#f7fbff">
+  <style>
+    :root {
+      --ink: #071426;
+      --ink-soft: #17253a;
+      --muted: #66758c;
+      --quiet: #91a0b7;
+      --blue: #006df2;
+      --blue-2: #36a3ff;
+      --green: #31c56b;
+      --line: rgba(8, 93, 181, 0.12);
+      --line-strong: rgba(8, 93, 181, 0.18);
+      --page: #f7fbff;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-solid: #ffffff;
+      --shadow: 0 24px 80px rgba(16, 59, 112, 0.13);
+      --shadow-tight: 0 14px 34px rgba(16, 59, 112, 0.12);
+      --radius: 28px;
+      --max: 1220px;
+    }
 
-        :root {
-            --color-bg: #f8f9fa;
-            --color-surface: #ffffff;
-            --color-text: #1a1a2e;
-            --color-text-muted: #6b7280;
-            --color-primary: #0891b2;
-            --color-primary-hover: #0e7490;
-            --color-border: rgba(0,0,0,0.08);
-            --color-accent-bg: #ecfeff;
-            --radius: 12px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.7;
-            font-size: 16px;
-            -webkit-font-smoothing: antialiased;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      background:
+        linear-gradient(120deg, transparent 0 47%, rgba(0, 109, 242, 0.055) 47% 47.35%, transparent 47.35% 100%) 0 0 / 124px 124px,
+        radial-gradient(circle at 82% 12%, rgba(0, 109, 242, 0.13), transparent 31%),
+        radial-gradient(circle at 12% 42%, rgba(49, 197, 107, 0.11), transparent 28%),
+        linear-gradient(180deg, #ffffff 0%, var(--page) 48%, #eef8ff 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
 
-        /* Header */
-        header {
-            padding: 48px 0 40px;
-            text-align: center;
-        }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 109, 242, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 109, 242, 0.035) 1px, transparent 1px);
+      background-size: 86px 86px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 72%);
+      z-index: -1;
+    }
 
-        .app-icon {
-            width: 88px;
-            height: 88px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #22d3ee 100%);
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(8, 145, 178, 0.3);
-        }
+    a {
+      color: inherit;
+    }
 
-        .app-icon svg {
-            width: 48px;
-            height: 48px;
-        }
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
-        }
+    .shell {
+      width: min(var(--max), calc(100vw - 48px));
+      margin: 0 auto;
+    }
 
-        .subtitle {
-            color: var(--color-text-muted);
-            font-size: 15px;
-        }
+    .nav {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
 
-        /* Sections */
-        section {
-            margin-bottom: 32px;
-        }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+      text-decoration: none;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      white-space: nowrap;
+    }
 
-        h2 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            padding-left: 12px;
-            border-left: 3px solid var(--color-primary);
-        }
+    .brand img {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      box-shadow: 0 10px 30px rgba(0, 109, 242, 0.2);
+    }
 
-        .card {
-            background: var(--color-surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 28px;
-            margin-bottom: 16px;
-        }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 34px;
+      color: var(--ink-soft);
+      font-size: 14px;
+      font-weight: 720;
+    }
 
-        /* Features */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+    .nav-links a {
+      text-decoration: none;
+    }
 
-        .feature-item {
-            background: var(--color-surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 20px;
-        }
+    .nav-links a:hover {
+      color: var(--blue);
+    }
 
-        .feature-item .icon {
-            font-size: 28px;
-            margin-bottom: 10px;
-            display: block;
-        }
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 820;
+      letter-spacing: -0.01em;
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 18px 38px rgba(0, 109, 242, 0.25);
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
 
-        .feature-item h3 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
+    .button:hover {
+      transform: translateY(-1px);
+      background: #005fd5;
+      box-shadow: 0 22px 46px rgba(0, 109, 242, 0.3);
+    }
 
-        .feature-item p {
-            font-size: 13px;
-            color: var(--color-text-muted);
-            line-height: 1.6;
-        }
+    .button.secondary {
+      color: var(--ink);
+      background: rgba(255,255,255,0.86);
+      border: 1px solid var(--line-strong);
+      box-shadow: 0 12px 28px rgba(16, 59, 112, 0.08);
+    }
 
-        /* FAQ */
-        .faq-item {
-            border-bottom: 1px solid var(--color-border);
-            padding: 0;
-        }
+    .hero {
+      min-height: calc(100dvh - 78px);
+      padding: 46px 0 58px;
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 56px;
+      align-items: center;
+    }
 
-        .faq-item:last-child {
-            border-bottom: none;
-        }
+    .hero-copy {
+      padding-bottom: 26px;
+    }
 
-        .faq-question {
-            width: 100%;
-            text-align: left;
-            padding: 18px 0;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: none;
-            border: none;
-            color: var(--color-text);
-            font-family: inherit;
-            line-height: 1.5;
-        }
+    h1 {
+      margin: 0;
+      max-width: 650px;
+      font-size: clamp(52px, 6.45vw, 92px);
+      line-height: 1;
+      letter-spacing: -0.048em;
+      color: var(--ink);
+    }
 
-        .faq-question:hover {
-            color: var(--color-primary);
-        }
+    .accent {
+      color: var(--blue);
+    }
 
-        .faq-question .arrow {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            margin-left: 12px;
-            transition: transform 0.25s ease;
-            color: var(--color-text-muted);
-        }
+    .lead {
+      margin: 26px 0 0;
+      max-width: 530px;
+      color: var(--muted);
+      font-size: clamp(20px, 2.1vw, 27px);
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
 
-        .faq-item.active .faq-question .arrow {
-            transform: rotate(180deg);
-        }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
 
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-        }
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 38px;
+      max-width: 620px;
+    }
 
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-        }
+    .micro-proof {
+      min-height: 66px;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.62);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+    }
 
-        .faq-answer-inner {
-            padding-bottom: 18px;
-            font-size: 14px;
-            color: var(--color-text-muted);
-            line-height: 1.7;
-        }
+    .micro-proof strong {
+      display: block;
+      font-size: 13px;
+      letter-spacing: -0.01em;
+    }
 
-        /* Contact */
-        .contact-card {
-            background: var(--color-accent-bg);
-            border-radius: var(--radius);
-            padding: 28px;
-            text-align: center;
-            margin-bottom: 16px;
-        }
+    .micro-proof span {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--muted);
+    }
 
-        .contact-card p {
-            font-size: 14px;
-            color: var(--color-text-muted);
-            margin-bottom: 16px;
-        }
+    .stage {
+      position: relative;
+      min-height: 640px;
+    }
 
-        .email-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--color-primary);
-            color: #fff;
-            text-decoration: none;
-            padding: 12px 28px;
-            border-radius: 100px;
-            font-size: 15px;
-            font-weight: 500;
-            transition: background 0.2s ease;
-        }
+    .stage-board {
+      position: absolute;
+      inset: 54px 0 18px 92px;
+      border-radius: 44px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.95), rgba(242,249,255,0.74)),
+        linear-gradient(120deg, transparent 0 49%, rgba(0,109,242,0.09) 49% 49.4%, transparent 49.4% 100%);
+      border: 1px solid rgba(8, 93, 181, 0.13);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
 
-        .email-btn:hover {
-            background: var(--color-primary-hover);
-        }
+    .stage-board::before,
+    .stage-board::after {
+      content: "";
+      position: absolute;
+      left: 6%;
+      right: -8%;
+      height: 96px;
+      border: 2px solid rgba(0, 109, 242, 0.12);
+      border-left: 0;
+      border-right: 0;
+      border-radius: 50%;
+      transform: rotate(-8deg);
+    }
 
-        /* Privacy */
-        .privacy-list {
-            list-style: none;
-            padding: 0;
-        }
+    .stage-board::before {
+      bottom: 90px;
+    }
 
-        .privacy-list li {
-            padding: 8px 0;
-            padding-left: 24px;
-            position: relative;
-            font-size: 14px;
-            color: var(--color-text-muted);
-        }
+    .stage-board::after {
+      bottom: 55px;
+      border-color: rgba(49, 197, 107, 0.13);
+      transform: rotate(-4deg);
+    }
 
-        .privacy-list li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #10b981;
-            font-weight: 700;
-        }
+    .phone {
+      position: absolute;
+      top: 4px;
+      left: 338px;
+      width: 302px;
+      padding: 11px;
+      border-radius: 46px;
+      background: #111d30;
+      box-shadow: 0 34px 86px rgba(7, 20, 38, 0.22);
+      z-index: 4;
+    }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 32px 0 48px;
-            font-size: 13px;
-            color: var(--color-text-muted);
-        }
+    .phone img {
+      border-radius: 35px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
 
-        footer p + p {
-            margin-top: 4px;
-        }
+    .float-card {
+      position: absolute;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(8, 93, 181, 0.12);
+      box-shadow: var(--shadow-tight);
+      backdrop-filter: blur(18px);
+      z-index: 5;
+    }
 
-        /* Responsive */
-        @media (max-width: 560px) {
-            header { padding: 36px 0 32px; }
-            h1 { font-size: 24px; }
-            .feature-grid { grid-template-columns: 1fr; }
-            .card { padding: 20px; }
-            .contact-card { padding: 20px; }
-        }
-    </style>
+    .source-card {
+      top: 88px;
+      left: 90px;
+      width: 150px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .source-card img {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      border-radius: 14px;
+    }
+
+    .source-card strong,
+    .summary-card strong,
+    .csv-card strong,
+    .ai-card strong {
+      display: block;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .source-card span,
+    .summary-card span,
+    .csv-card span,
+    .ai-card span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .csv-card {
+      left: 54px;
+      bottom: 106px;
+      width: 220px;
+      padding: 18px;
+    }
+
+    .table {
+      margin-top: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      color: var(--ink-soft);
+    }
+
+    .table div {
+      display: grid;
+      grid-template-columns: 1fr 0.8fr 0.7fr;
+      gap: 8px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(8,93,181,0.1);
+    }
+
+    .summary-card {
+      right: 0;
+      top: 142px;
+      width: 250px;
+      padding: 20px;
+    }
+
+    .summary-card .tag {
+      display: inline-flex;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #0b8b43;
+      background: rgba(49,197,107,0.12);
+      font-size: 11px;
+      font-weight: 820;
+    }
+
+    .ai-card {
+      right: 22px;
+      bottom: 116px;
+      width: 260px;
+      padding: 18px;
+    }
+
+    .ai-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .ai-dot {
+      min-height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue);
+      font-weight: 900;
+      background: rgba(0,109,242,0.08);
+      border: 1px solid rgba(0,109,242,0.11);
+    }
+
+    .connector {
+      position: absolute;
+      border-top: 2px dashed rgba(0,109,242,0.55);
+      z-index: 3;
+    }
+
+    .connector.one {
+      top: 178px;
+      left: 236px;
+      width: 130px;
+      transform: rotate(15deg);
+    }
+
+    .connector.two {
+      top: 330px;
+      left: 258px;
+      width: 118px;
+      transform: rotate(-28deg);
+    }
+
+    .connector.three {
+      top: 290px;
+      right: 222px;
+      width: 104px;
+      transform: rotate(-10deg);
+    }
+
+    .connector.four {
+      bottom: 226px;
+      right: 248px;
+      width: 90px;
+      transform: rotate(18deg);
+    }
+
+    .proof-strip {
+      margin: -6px auto 0;
+      padding: 18px;
+      border-radius: 26px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line-strong);
+      box-shadow: var(--shadow-tight);
+      backdrop-filter: blur(20px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .proof-item {
+      min-height: 74px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 26px;
+      border-right: 1px solid var(--line);
+    }
+
+    .proof-item:last-child {
+      border-right: 0;
+    }
+
+    .proof-item strong {
+      font-size: 19px;
+      letter-spacing: -0.03em;
+    }
+
+    .proof-item span {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    section {
+      padding: 84px 0;
+    }
+
+    .section-head {
+      max-width: 720px;
+      margin: 0 auto 42px;
+      text-align: center;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(34px, 4.5vw, 56px);
+      line-height: 1;
+      letter-spacing: -0.055em;
+    }
+
+    .section-head p {
+      margin: 16px auto 0;
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 19px;
+      line-height: 1.5;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      padding: 24px;
+      min-height: 206px;
+      border-radius: 26px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 46px rgba(16, 59, 112, 0.08);
+      overflow: hidden;
+    }
+
+    .step::after {
+      content: "";
+      position: absolute;
+      inset: auto 22px 22px auto;
+      width: 78px;
+      height: 78px;
+      border-radius: 28px;
+      border: 1px solid rgba(0,109,242,0.12);
+      background: linear-gradient(135deg, rgba(0,109,242,0.08), rgba(49,197,107,0.08));
+      transform: rotate(-8deg);
+    }
+
+    .step small {
+      color: var(--blue);
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .step strong {
+      display: block;
+      margin-top: 44px;
+      font-size: 23px;
+      letter-spacing: -0.04em;
+    }
+
+    .step p {
+      max-width: 240px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.48;
+    }
+
+    .gallery-wrap {
+      position: relative;
+      padding: 24px 0 34px;
+      overflow: hidden;
+    }
+
+    .gallery-rail {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(360px, 1fr));
+      gap: 18px;
+      transform: rotate(-2deg);
+      transform-origin: center;
+      width: min-content;
+      margin-left: calc((100vw - min(var(--max), calc(100vw - 48px))) / -2 + 24px);
+    }
+
+    .gallery-card {
+      width: 420px;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 24px 60px rgba(16, 59, 112, 0.13);
+      border: 1px solid rgba(8,93,181,0.12);
+      overflow: hidden;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: auto;
+    }
+
+    .gallery-link {
+      display: flex;
+      justify-content: center;
+      margin-top: 42px;
+    }
+
+    .privacy-diagram {
+      display: grid;
+      grid-template-columns: 0.68fr 1.32fr;
+      gap: 42px;
+      align-items: center;
+      padding: 44px;
+      border-radius: 38px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(238,248,255,0.78));
+      border: 1px solid var(--line-strong);
+      box-shadow: var(--shadow);
+    }
+
+    .privacy-diagram h2 {
+      margin: 0;
+      font-size: clamp(36px, 4.5vw, 58px);
+      line-height: 1;
+      letter-spacing: -0.055em;
+    }
+
+    .privacy-diagram p {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .flow-line {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      align-items: center;
+    }
+
+    .flow-line::before {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 48%;
+      border-top: 2px dashed rgba(0,109,242,0.5);
+      z-index: 0;
+    }
+
+    .flow-node {
+      position: relative;
+      z-index: 1;
+      min-height: 148px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: 24px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 16px 36px rgba(16, 59, 112, 0.08);
+    }
+
+    .flow-node img {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+    }
+
+    .flow-node strong {
+      font-size: 14px;
+      letter-spacing: -0.02em;
+    }
+
+    .flow-node span {
+      margin-top: 5px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .launch-grid {
+      display: grid;
+      grid-template-columns: 0.72fr 1.05fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .launch-panel {
+      padding: 28px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.83);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 44px rgba(16, 59, 112, 0.08);
+    }
+
+    .launch-panel h3 {
+      margin: 0;
+      font-size: 27px;
+      line-height: 1.05;
+      letter-spacing: -0.045em;
+    }
+
+    .launch-panel p,
+    .launch-panel li {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.56;
+    }
+
+    .comment {
+      font-size: 14px;
+      line-height: 1.58;
+      color: var(--ink-soft);
+      white-space: pre-line;
+    }
+
+    .faq-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .faq-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-soft);
+      font-weight: 720;
+    }
+
+    .final-cta {
+      padding: 38px 0 64px;
+    }
+
+    .footer-card {
+      min-height: 164px;
+      padding: 28px;
+      border-radius: 34px;
+      background: var(--ink);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      box-shadow: 0 30px 80px rgba(7,20,38,0.18);
+    }
+
+    .footer-card strong {
+      display: block;
+      font-size: 28px;
+      letter-spacing: -0.04em;
+    }
+
+    .footer-card span {
+      display: block;
+      margin-top: 8px;
+      color: rgba(255,255,255,0.68);
+    }
+
+    .footer-card .button {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: none;
+      white-space: nowrap;
+    }
+
+    footer {
+      padding: 0 0 38px;
+      color: var(--quiet);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 1060px) {
+      .hero,
+      .privacy-diagram,
+      .launch-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .stage {
+        min-height: 620px;
+      }
+
+      .stage-board {
+        left: 0;
+      }
+
+      .phone {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .source-card,
+      .csv-card {
+        left: 24px;
+      }
+
+      .summary-card,
+      .ai-card {
+        right: 24px;
+      }
+
+      .workflow,
+      .flow-line,
+      .proof-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-item {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .proof-item:last-child {
+        border-bottom: 0;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 28px, var(--max));
+      }
+
+      .nav {
+        height: auto;
+        padding: 16px 0;
+      }
+
+      .nav .button {
+        min-height: 42px;
+        padding: 0 14px;
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: clamp(46px, 13vw, 62px);
+        line-height: 1.03;
+        letter-spacing: -0.036em;
+      }
+
+      .lead {
+        font-size: 20px;
+      }
+
+      .hero {
+        padding-top: 28px;
+        gap: 24px;
+      }
+
+      .hero-points {
+        grid-template-columns: 1fr;
+      }
+
+      .stage {
+        min-height: 520px;
+        transform: scale(0.84);
+        transform-origin: top center;
+        margin-bottom: -74px;
+      }
+
+      .stage-board {
+        inset: 60px -42px 24px -42px;
+      }
+
+      .source-card {
+        top: 112px;
+      }
+
+      .summary-card {
+        top: 118px;
+        width: 214px;
+      }
+
+      .csv-card {
+        width: 205px;
+      }
+
+      .ai-card {
+        width: 214px;
+      }
+
+      .gallery-rail {
+        grid-template-columns: 1fr;
+        width: 100%;
+        margin-left: 0;
+        transform: none;
+      }
+
+      .gallery-card {
+        width: 100%;
+      }
+
+      .privacy-diagram {
+        padding: 24px;
+      }
+
+      .flow-line::before {
+        display: none;
+      }
+
+      .footer-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="app-icon">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M24 6C18 6 14 10 14 14C14 18 16 20 16 24C16 28 13 32 13 32H35C35 32 32 28 32 24C32 20 34 18 34 14C34 10 30 6 24 6Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    <path d="M8 18H12M36 18H40M10 28H14M34 28H38" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-                    <path d="M20 32V34C20 36.2 21.8 38 24 38C26.2 38 28 36.2 28 34V32" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-                    <circle cx="24" cy="20" r="3" stroke="white" stroke-width="2" fill="none"/>
-                    <path d="M24 14V17M24 23V26" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-                </svg>
-            </div>
-            <h1>健康数据随手查</h1>
-            <p class="subtitle">轻松查看和导出 iPhone 与 Apple Watch 健康数据</p>
-        </header>
+  <header class="shell nav">
+    <a class="brand" href="#top" aria-label="HealthExport Local home">
+      <img src="assets/product-hunt/thumbnail/healthexport-local-producthunt-thumbnail.png" alt="HealthExport Local icon">
+      <span>HealthExport Local</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#product">Product</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#launch">Product Hunt</a>
+    </nav>
+    <a class="button" href="https://apps.apple.com/app/id6761297560">Get the app</a>
+  </header>
 
-        <!-- Features -->
-        <section>
-            <h2>功能介绍</h2>
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <span class="icon">📊</span>
-                    <h3>全面数据导出</h3>
-                    <p>支持心率、步数、睡眠、血氧、运动记录等多种健康数据，导出为标准 CSV 格式。</p>
-                </div>
-                <div class="feature-item">
-                    <span class="icon">📅</span>
-                    <h3>灵活时间范围</h3>
-                    <p>最近 7 天、30 天、1 年或全部数据，也可自定义起止日期精确筛选。</p>
-                </div>
-                <div class="feature-item">
-                    <span class="icon">📈</span>
-                    <h3>内置数据分析</h3>
-                    <p>在 App 内直接查看心率趋势、运动统计、睡眠分析等可视化图表。</p>
-                </div>
-                <div class="feature-item">
-                    <span class="icon">🔒</span>
-                    <h3>隐私至上</h3>
-                    <p>所有数据处理均在设备本地完成，不上传到任何服务器，安全可靠。</p>
-                </div>
-            </div>
-        </section>
+  <main id="top">
+    <section class="shell hero" id="product">
+      <div class="hero-copy">
+        <h1>Export Apple Health data for <span class="accent">AI, locally.</span></h1>
+        <p class="lead">CSV files and AI-ready summaries, generated on device.</p>
+        <div class="cta-row">
+          <a class="button" href="https://apps.apple.com/app/id6761297560">Get the app</a>
+          <a class="button secondary" href="#gallery">View gallery</a>
+        </div>
+        <div class="hero-points" aria-label="Key benefits">
+          <div class="micro-proof">
+            <strong>100% on-device</strong>
+            <span>Your data stays with you.</span>
+          </div>
+          <div class="micro-proof">
+            <strong>Private by design</strong>
+            <span>No account. No server upload.</span>
+          </div>
+          <div class="micro-proof">
+            <strong>Powerful and simple</strong>
+            <span>Filter, export, summarize.</span>
+          </div>
+        </div>
+      </div>
 
-        <!-- FAQ -->
-        <section>
-            <h2>常见问题</h2>
-            <div class="card">
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>支持导出哪些健康数据？</span>
-                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </button>
-                    <div class="faq-answer"><div class="faq-answer-inner">
-                        支持导出 Apple 健康中记录的绝大多数数据类型，包括但不限于：心率、静息心率、步数、距离、活动能量、血氧饱和度、心率变异性（HRV）、呼吸频率、体温、身高体重、睡眠分析、正念冥想，以及跑步、骑行、游泳、力量训练等各类运动记录。
-                    </div></div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>导出的 CSV 文件怎么打开？</span>
-                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </button>
-                    <div class="faq-answer"><div class="faq-answer-inner">
-                        CSV 是一种通用的表格数据格式，可以用 Microsoft Excel、Apple Numbers、Google Sheets、WPS 等软件直接打开。你也可以使用 Python、R 等编程工具对数据进行更深入的分析和可视化。
-                    </div></div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>需要 Apple Watch 才能使用吗？</span>
-                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </button>
-                    <div class="faq-answer"><div class="faq-answer-inner">
-                        不需要。只要你的 iPhone 上有 Apple 健康 App 并记录了数据，就可以使用本应用。如果你同时佩戴了 Apple Watch，那么 Watch 记录的心率、血氧、运动等更丰富的数据也会一并支持导出。
-                    </div></div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>我的数据安全吗？</span>
-                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </button>
-                    <div class="faq-answer"><div class="faq-answer-inner">
-                        绝对安全。本应用不收集任何用户数据，不包含任何第三方数据追踪或分析 SDK。所有健康数据的读取、分析和导出均在你的 iPhone 本地完成，不会经过任何外部服务器。
-                    </div></div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>为什么看不到某些数据？</span>
-                        <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-                    </button>
-                    <div class="faq-answer"><div class="faq-answer-inner">
-                        请确认你在首次打开 App 时已授权访问对应的健康数据类型。你可以前往 iPhone 的"设置" → "隐私与安全性" → "健康" → "健康数据随手查"，检查并开启需要读取的数据权限。如果某类数据本身没有记录（如没有佩戴 Apple Watch 则不会有血氧数据），则不会显示。
-                    </div></div>
-                </div>
-            </div>
-        </section>
+      <div class="stage" aria-label="HealthExport Local product workflow preview">
+        <div class="stage-board"></div>
+        <div class="connector one"></div>
+        <div class="connector two"></div>
+        <div class="connector three"></div>
+        <div class="connector four"></div>
+        <div class="float-card source-card">
+          <img src="assets/product-hunt/thumbnail/healthexport-local-producthunt-thumbnail.png" alt="">
+          <strong>Apple Health</strong>
+          <span>HealthKit data</span>
+        </div>
+        <div class="float-card csv-card">
+          <strong>Clean CSV</strong>
+          <span>Export exact ranges.</span>
+          <div class="table" aria-hidden="true">
+            <div><b>date</b><b>steps</b><b>hr</b></div>
+            <div><span>06-01</span><span>8123</span><span>64</span></div>
+            <div><span>06-02</span><span>9245</span><span>63</span></div>
+          </div>
+        </div>
+        <div class="phone">
+          <img src="assets/product-hunt/gallery/01-portable-apple-health-data.png" alt="HealthExport Local data overview">
+        </div>
+        <div class="float-card summary-card">
+          <span class="tag">AI-ready</span>
+          <strong>Health Summary</strong>
+          <span>Average steps, sleep, heart rate and trends in structured text.</span>
+        </div>
+        <div class="float-card ai-card">
+          <strong>Paste into your AI</strong>
+          <span>You choose where it goes.</span>
+          <div class="ai-row" aria-hidden="true">
+            <div class="ai-dot">GPT</div>
+            <div class="ai-dot">AI</div>
+            <div class="ai-dot">G</div>
+            <div class="ai-dot">...</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <!-- Contact -->
-        <section>
-            <h2>联系我们</h2>
-            <div class="contact-card">
-                <p>如果你在使用过程中遇到任何问题，或者有功能建议，欢迎通过邮件联系我们。我们会尽快回复。</p>
-                <a href="mailto:s632533290@gmail.com" class="email-btn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13L2 4"/></svg>
-                    s632533290@gmail.com
-                </a>
-            </div>
-        </section>
-
-        <!-- Privacy -->
-        <section>
-            <h2>隐私政策</h2>
-            <div class="card">
-                <p style="margin-bottom:16px; font-size:14px; color:var(--color-text-muted);">
-                    我们非常重视你的隐私。以下是我们对用户数据的处理原则：
-                </p>
-                <ul class="privacy-list">
-                    <li>本应用不收集、不存储、不上传任何用户个人信息或健康数据</li>
-                    <li>所有健康数据均通过 Apple HealthKit 接口在设备本地读取和处理</li>
-                    <li>导出的 CSV 文件仅保存在你选择的本地位置，不经过任何外部服务器</li>
-                    <li>本应用不包含任何第三方广告、数据追踪或分析 SDK</li>
-                    <li>本应用不要求用户注册账号，不收集邮箱、手机号等个人联系信息</li>
-                    <li>我们不会以任何方式将你的数据出售或分享给第三方</li>
-                </ul>
-                <p style="margin-top:16px; font-size:13px; color:var(--color-text-muted);">
-                    如你对隐私政策有任何疑问，请通过上方邮箱联系我们。
-                </p>
-            </div>
-        </section>
-
-        <footer>
-            <p>© 2026 健康数据随手查. All rights reserved.</p>
-            <p>本页面最后更新于 2026 年 3 月</p>
-        </footer>
+    <div class="shell proof-strip" aria-label="Privacy proof points">
+      <div class="proof-item">
+        <strong>No account</strong>
+        <span>Use everything instantly.</span>
+      </div>
+      <div class="proof-item">
+        <strong>No AI API call</strong>
+        <span>Summaries are generated locally.</span>
+      </div>
+      <div class="proof-item">
+        <strong>No health data upload</strong>
+        <span>Your data stays on your device.</span>
+      </div>
     </div>
 
-    <script>
-        function toggleFaq(btn) {
-            const item = btn.parentElement;
-            const wasActive = item.classList.contains('active');
-            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-            if (!wasActive) item.classList.add('active');
-        }
-    </script>
+    <section class="shell" id="workflow">
+      <div class="section-head">
+        <h2>From HealthKit to any AI</h2>
+        <p>Choose what you need. Export clean data. Paste it where it helps.</p>
+      </div>
+      <div class="workflow">
+        <div class="step">
+          <small>Source</small>
+          <strong>Apple Health</strong>
+          <p>Read activity, workouts, heart rate, sleep, body measurements, nutrition and more.</p>
+        </div>
+        <div class="step">
+          <small>Local app</small>
+          <strong>HealthExport Local</strong>
+          <p>Select a date range, choose data categories, and keep processing on device.</p>
+        </div>
+        <div class="step">
+          <small>Output</small>
+          <strong>CSV or text</strong>
+          <p>Export raw samples, daily summaries, or plain text summaries for prompts.</p>
+        </div>
+        <div class="step">
+          <small>Destination</small>
+          <strong>Your workflow</strong>
+          <p>Use spreadsheets, Python, ChatGPT, Claude, Gemini, or your own analysis setup.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="shell section-head">
+        <h2>Product Hunt gallery</h2>
+        <p>Launch visuals built from real product screens, data-flow graphics, and a clean light brand system.</p>
+      </div>
+      <div class="gallery-wrap">
+        <div class="gallery-rail" aria-label="Product Hunt gallery assets">
+          <a class="gallery-card" href="assets/product-hunt/gallery/01-portable-apple-health-data.png"><img src="assets/product-hunt/gallery/01-portable-apple-health-data.png" alt="Your Apple Health data, finally portable"></a>
+          <a class="gallery-card" href="assets/product-hunt/gallery/02-healthkit-to-any-ai.png"><img src="assets/product-hunt/gallery/02-healthkit-to-any-ai.png" alt="From HealthKit to any AI"></a>
+          <a class="gallery-card" href="assets/product-hunt/gallery/03-export-exact-range.png"><img src="assets/product-hunt/gallery/03-export-exact-range.png" alt="Export the exact range you need"></a>
+          <a class="gallery-card" href="assets/product-hunt/gallery/04-shortcuts-backup.png"><img src="assets/product-hunt/gallery/04-shortcuts-backup.png" alt="Automate backups with Shortcuts"></a>
+          <a class="gallery-card" href="assets/product-hunt/gallery/05-private-by-design.png"><img src="assets/product-hunt/gallery/05-private-by-design.png" alt="Private by design"></a>
+        </div>
+      </div>
+      <div class="gallery-link">
+        <a class="button secondary" href="assets/product-hunt/gallery/01-portable-apple-health-data.png">View full gallery</a>
+      </div>
+    </section>
+
+    <section class="shell" id="privacy">
+      <div class="privacy-diagram">
+        <div>
+          <h2>Local processing. Total control.</h2>
+          <p>HealthExport Local reads data from HealthKit on your device, processes it locally, and gives you files or text. You decide where it goes.</p>
+        </div>
+        <div class="flow-line" aria-label="Local processing diagram">
+          <div class="flow-node">
+            <img src="assets/product-hunt/thumbnail/healthexport-local-producthunt-thumbnail.png" alt="">
+            <strong>HealthKit</strong>
+            <span>on your iPhone</span>
+          </div>
+          <div class="flow-node">
+            <img src="assets/product-hunt/thumbnail/healthexport-local-producthunt-thumbnail.png" alt="">
+            <strong>HealthExport</strong>
+            <span>on-device</span>
+          </div>
+          <div class="flow-node">
+            <strong>CSV / Text</strong>
+            <span>on your device</span>
+          </div>
+          <div class="flow-node">
+            <strong>You choose</strong>
+            <span>what to do next</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell" id="launch">
+      <div class="launch-grid">
+        <div class="launch-panel">
+          <h3>Join the conversation</h3>
+          <p>I would love feedback on how this app fits into your workflow and what export format makes health data most useful.</p>
+          <a class="button secondary" href="https://www.producthunt.com/">View on Product Hunt</a>
+        </div>
+        <div class="launch-panel">
+          <h3>First comment draft</h3>
+          <p class="comment">Hi Product Hunt, I built HealthExport Local to make Apple Health data easier to use outside the Health app.
+
+Instead of exporting a huge all-or-nothing archive, you can choose a date range, select the data types you care about, export CSV files, or generate a structured local summary you can paste into your preferred AI app.</p>
+        </div>
+        <div class="launch-panel">
+          <h3>FAQ preview</h3>
+          <ul class="faq-list">
+            <li>Does the app upload my health data?</li>
+            <li>Does the app call AI APIs?</li>
+            <li>What can I export?</li>
+            <li>Is this medical advice?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell final-cta">
+      <div class="footer-card">
+        <div>
+          <strong>HealthExport Local</strong>
+          <span>Export Apple Health data for AI, locally.</span>
+        </div>
+        <a class="button" href="https://apps.apple.com/app/id6761297560">Get the app</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell">
+    HealthExport Local is for personal records, export, backup, and self-review. It does not provide medical diagnosis or medical advice.
+  </footer>
 </body>
 </html>
