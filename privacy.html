@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy · HealthExport Local</title>
+  <meta name="description" content="Privacy Policy for HealthExport Local (健康数据随手查), an on-device Apple Health export and analysis app.">
+  <style>
+    :root {
+      --ink: #071426;
+      --muted: #66758c;
+      --blue: #006df2;
+      --line: rgba(8, 93, 181, 0.14);
+      --page: #f7fbff;
+      --surface: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #e8eef7;
+        --muted: #9aa8bd;
+        --blue: #4fa3ff;
+        --line: rgba(120, 170, 230, 0.22);
+        --page: #0b1220;
+        --surface: #121b2c;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans", "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+    nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+    nav a {
+      color: var(--muted); text-decoration: none; font-size: 13px;
+      padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px;
+    }
+    nav a[aria-current="true"] { color: var(--blue); border-color: var(--blue); }
+    h1 { font-size: 28px; line-height: 1.25; margin: 0 0 4px; }
+    .meta { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+    section {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+      padding: 18px 20px; margin: 0 0 14px;
+    }
+    h2 { font-size: 18px; margin: 0 0 8px; }
+    p { margin: 0 0 8px; }
+    ul { margin: 0; padding-left: 20px; }
+    li { margin: 0 0 6px; }
+    a { color: var(--blue); }
+    footer { color: var(--muted); font-size: 13px; margin-top: 24px; }
+  </style>
+</head>
+<body>
+<main>
+  <nav id="langs" aria-label="Language"></nav>
+  <h1 id="title"></h1>
+  <p class="meta" id="meta"></p>
+  <div id="content"></div>
+  <footer><a href="./">HealthExport Local</a> · <a href="mailto:onenfiction@gmail.com">onenfiction@gmail.com</a></footer>
+</main>
+<noscript>
+  <main>
+    <h1>Privacy Policy · HealthExport Local</h1>
+    <p>HealthExport Local reads Apple Health data only with your permission and processes it on your device. The developer does not collect any data and runs no server. Data leaves your device only when you share an exported file, paste a copied summary into another app, turn on Cloud Sync to your own WebDAV server, or turn on outdoor weather context (your location is sent to Apple WeatherKit). Contact: onenfiction@gmail.com</p>
+  </main>
+</noscript>
+<script>
+const LANGS = [
+  ["en", "English"], ["zh-Hans", "简体中文"], ["zh-Hant", "繁體中文"], ["ja", "日本語"], ["ko", "한국어"],
+  ["fr", "Français"], ["de", "Deutsch"], ["es", "Español"], ["pt-BR", "Português"], ["it", "Italiano"]
+];
+
+const T = {
+  "en": {
+    title: "Privacy Policy",
+    meta: "HealthExport Local · Effective October 30, 2026",
+    s: [
+      ["Summary", ["HealthExport Local is an on-device tool for Apple Health. It needs no account, contains no advertising or analytics SDKs, and the developer runs no server. The developer does not collect, receive, store, sell, or share any of your data."]],
+      ["Health data", [
+        "With your permission, the app reads Apple Health (HealthKit) data, such as activity, workouts, heart rate, sleep, body measurements, nutrition, and other categories you allow.",
+        "This data is read and processed on your device to show analysis, create exports, and build summaries. The app does not write to or modify your Apple Health data.",
+        "Health data is never used for advertising or marketing and is never sold."
+      ]],
+      ["When data leaves your device", [
+        "Only through actions you start:",
+        "• Exported files: CSV or ZIP files leave your device only when you choose a destination in the system share sheet, the Files app, or a folder you selected for backup.",
+        "• AI summaries: the summary is copied to the clipboard. If you choose an AI app or website, the app opens it, and you paste the text yourself. Nothing is sent automatically. That service's own privacy policy applies to what you paste.",
+        "• Cloud Sync (off by default): when you turn it on and enter your own WebDAV server (for example Nextcloud, Koofr, or Jianguoyun), health summaries are uploaded only to that address. Your server password is stored in the iOS Keychain on your device.",
+        "• Weather context: only when you turn on environment enhancement and choose outdoor, your current location is sent to Apple WeatherKit to fetch weather. The app does not keep your location.",
+        "• Apple Watch: the iPhone sends a health status snapshot to your paired Apple Watch through Apple's WatchConnectivity."
+      ]],
+      ["Purchases", ["Full Access is a one-time purchase processed by the Apple App Store. The app only receives whether the purchase is active. It never sees your payment details."]],
+      ["Data stored on your device", ["Settings, the analysis profile you confirm, and temporary export files are stored on your device. Temporary files are cleaned up automatically. Deleting the app removes its data. Data already in Apple Health stays under your control in the Health app."]],
+      ["Medical disclaimer", ["Analysis, scores, and summaries are for personal reference only and are not medical advice or diagnosis."]],
+      ["Children", ["The app is not directed to children and does not knowingly collect any information from anyone."]],
+      ["Changes and contact", ["If this policy changes, the updated version will be posted on this page with a new effective date. Questions: onenfiction@gmail.com"]]
+    ]
+  },
+  "zh-Hans": {
+    title: "隐私政策",
+    meta: "健康数据随手查（HealthExport Local）· 2026 年 10 月 30 日起生效",
+    s: [
+      ["概述", ["健康数据随手查是配合 Apple 健康使用的本地工具。无需账号，不含广告或统计分析 SDK，开发者没有服务器。开发者不会收集、接收、存储、出售或共享你的任何数据。"]],
+      ["健康数据", [
+        "经你授权后，App 读取 Apple 健康（HealthKit）中的数据，例如活动、锻炼、心率、睡眠、身体测量、营养以及你允许的其他类别。",
+        "这些数据在你的设备上读取和处理，用于显示分析、生成导出文件和健康摘要。App 不会向 Apple 健康写入或修改任何数据。",
+        "健康数据不会用于广告或营销，也不会被出售。"
+      ]],
+      ["数据何时离开你的设备", [
+        "只会通过你主动发起的操作：",
+        "• 导出文件：CSV 或 ZIP 文件只有在你通过系统分享面板、「文件」App 或你选定的备份文件夹选择去处后，才会离开设备。",
+        "• AI 摘要：摘要只复制到剪贴板。你选择 AI App 或网站后，App 会打开它，由你自己粘贴，App 不会自动发送。你粘贴的内容适用该服务自己的隐私政策。",
+        "• 云端同步（默认关闭）：开启并填写你自己的 WebDAV 服务器（例如坚果云、Koofr、Nextcloud）后，健康摘要只会上传到该地址。服务器密码保存在设备的 iOS 钥匙串中。",
+        "• 天气环境：只有当你开启环境增强并选择户外时，当前位置才会发送给 Apple WeatherKit 以获取天气。App 不保存你的位置。",
+        "• Apple Watch：iPhone 通过 Apple 的 WatchConnectivity 把健康状态快照发送到你配对的 Apple Watch。"
+      ]],
+      ["购买", ["完整版为一次性购买，由 Apple App Store 处理。App 只获知购买是否有效，不会接触你的付款信息。"]],
+      ["设备上保存的数据", ["设置、你确认的分析资料和导出临时文件保存在你的设备上，临时文件会自动清理。删除 App 即删除其数据。已在 Apple 健康中的数据仍由你在「健康」App 中管理。"]],
+      ["医疗免责", ["分析、评分与摘要仅供个人参考，不构成医疗建议或诊断。"]],
+      ["儿童", ["本 App 并非面向儿童，也不会有意收集任何人的信息。"]],
+      ["变更与联系", ["本政策如有变更，会在本页发布更新版本并标注新的生效日期。如有疑问：onenfiction@gmail.com"]]
+    ]
+  },
+  "zh-Hant": {
+    title: "隱私權政策",
+    meta: "健康資料隨手查（HealthExport Local）· 2026 年 10 月 30 日起生效",
+    s: [
+      ["概述", ["健康資料隨手查是搭配 Apple 健康使用的本機工具。無需帳號，不含廣告或統計分析 SDK，開發者沒有伺服器。開發者不會蒐集、接收、儲存、出售或分享你的任何資料。"]],
+      ["健康資料", [
+        "經你授權後，App 讀取 Apple 健康（HealthKit）中的資料，例如活動、體能訓練、心率、睡眠、身體測量、營養以及你允許的其他類別。",
+        "這些資料在你的裝置上讀取與處理，用於顯示分析、產生匯出檔案與健康摘要。App 不會寫入或修改 Apple 健康中的任何資料。",
+        "健康資料不會用於廣告或行銷，也不會被出售。"
+      ]],
+      ["資料何時離開你的裝置", [
+        "只會透過你主動發起的操作：",
+        "• 匯出檔案：CSV 或 ZIP 檔案只有在你透過系統分享面板、「檔案」App 或你選定的備份資料夾選擇去處後，才會離開裝置。",
+        "• AI 摘要：摘要只複製到剪貼簿。你選擇 AI App 或網站後，App 會開啟它，由你自行貼上，App 不會自動傳送。你貼上的內容適用該服務自己的隱私權政策。",
+        "• 雲端同步（預設關閉）：開啟並填寫你自己的 WebDAV 伺服器（例如 Nextcloud、Koofr、坚果云）後，健康摘要只會上傳到該位址。伺服器密碼儲存在裝置的 iOS 鑰匙圈中。",
+        "• 天氣環境：只有當你開啟環境增強並選擇戶外時，目前位置才會傳送給 Apple WeatherKit 以取得天氣。App 不保存你的位置。",
+        "• Apple Watch：iPhone 透過 Apple 的 WatchConnectivity 將健康狀態快照傳送到你配對的 Apple Watch。"
+      ]],
+      ["購買", ["完整版為一次性購買，由 Apple App Store 處理。App 只得知購買是否有效，不會接觸你的付款資訊。"]],
+      ["裝置上保存的資料", ["設定、你確認的分析資料與匯出暫存檔案保存在你的裝置上，暫存檔案會自動清理。刪除 App 即刪除其資料。已在 Apple 健康中的資料仍由你在「健康」App 中管理。"]],
+      ["醫療免責", ["分析、評分與摘要僅供個人參考，不構成醫療建議或診斷。"]],
+      ["兒童", ["本 App 並非以兒童為對象，也不會有意蒐集任何人的資訊。"]],
+      ["變更與聯絡", ["本政策如有變更，會在本頁發布更新版本並標註新的生效日期。如有疑問：onenfiction@gmail.com"]]
+    ]
+  },
+  "ja": {
+    title: "プライバシーポリシー",
+    meta: "HealthExport Local · 2026年10月30日発効",
+    s: [
+      ["概要", ["HealthExport Local は Apple ヘルスケアと連携して使う端末内のツールです。アカウント不要で、広告や解析の SDK は含まれず、開発者はサーバーを運営していません。開発者があなたのデータを収集、受信、保存、販売、共有することはありません。"]],
+      ["健康データ", [
+        "あなたの許可を得たうえで、アクティビティ、ワークアウト、心拍数、睡眠、身体測定、栄養など、許可されたカテゴリの Apple ヘルスケア（HealthKit）データを読み取ります。",
+        "データは端末内で読み取り・処理され、分析の表示、書き出しファイルとサマリーの作成に使われます。Apple ヘルスケアへの書き込みや変更は行いません。",
+        "健康データを広告やマーケティングに使用したり、販売したりすることはありません。"
+      ]],
+      ["データが端末の外に出る場合", [
+        "あなたが自分で操作したときだけです。",
+        "・書き出したファイル：CSV または ZIP ファイルは、共有シート、「ファイル」App、またはバックアップ用に選んだフォルダで送信先を選んだときだけ端末の外に出ます。",
+        "・AI サマリー：サマリーはクリップボードにコピーされます。AI アプリや Web サイトを選ぶとそれを開き、貼り付けはあなた自身が行います。自動送信はしません。貼り付けた内容には、そのサービスのプライバシーポリシーが適用されます。",
+        "・クラウド同期（初期状態はオフ）：オンにしてご自身の WebDAV サーバー（Nextcloud、Koofr など）を入力すると、健康サマリーはそのアドレスにだけアップロードされます。サーバーのパスワードは端末の iOS キーチェーンに保存されます。",
+        "・天気：環境補正をオンにして屋外を選んだときだけ、現在地を Apple WeatherKit に送って天気を取得します。位置情報は保存しません。",
+        "・Apple Watch：iPhone は Apple の WatchConnectivity を通じて、ペアリングされた Apple Watch に健康状態のスナップショットを送ります。"
+      ]],
+      ["購入", ["フルアクセスは Apple App Store が処理する買い切りの購入です。App が受け取るのは購入が有効かどうかだけで、支払い情報にはアクセスしません。"]],
+      ["端末内に保存されるデータ", ["設定、あなたが確認した分析プロフィール、書き出しの一時ファイルは端末内に保存され、一時ファイルは自動的に削除されます。App を削除するとそのデータも削除されます。Apple ヘルスケア内のデータは、引き続き「ヘルスケア」App で管理できます。"]],
+      ["医療に関する注意", ["分析、スコア、サマリーは個人の参考情報であり、医療上の助言や診断ではありません。"]],
+      ["子ども", ["本 App は子ども向けではなく、誰の情報も意図的に収集しません。"]],
+      ["変更とお問い合わせ", ["本ポリシーを変更する場合は、新しい発効日とともにこのページで公開します。お問い合わせ：onenfiction@gmail.com"]]
+    ]
+  },
+  "ko": {
+    title: "개인정보 처리방침",
+    meta: "HealthExport Local · 2026년 10월 30일 시행",
+    s: [
+      ["요약", ["HealthExport Local은 Apple 건강 앱과 함께 사용하는 기기 내 도구입니다. 계정이 필요 없고, 광고나 분석 SDK가 없으며, 개발자는 서버를 운영하지 않습니다. 개발자는 사용자의 어떤 데이터도 수집, 수신, 저장, 판매 또는 공유하지 않습니다."]],
+      ["건강 데이터", [
+        "사용자가 허용하면 활동, 운동, 심박수, 수면, 신체 측정, 영양 등 허용된 범주의 Apple 건강(HealthKit) 데이터를 읽습니다.",
+        "이 데이터는 기기에서 읽고 처리되며 분석 표시, 내보내기 파일과 요약 생성에 사용됩니다. 앱은 Apple 건강 데이터를 기록하거나 수정하지 않습니다.",
+        "건강 데이터는 광고나 마케팅에 사용되지 않으며 판매되지 않습니다."
+      ]],
+      ["데이터가 기기를 벗어나는 경우", [
+        "사용자가 직접 시작한 작업으로만 가능합니다.",
+        "• 내보낸 파일: CSV 또는 ZIP 파일은 시스템 공유 시트, 파일 앱 또는 백업용으로 선택한 폴더에서 대상을 고를 때만 기기를 벗어납니다.",
+        "• AI 요약: 요약은 클립보드에 복사됩니다. AI 앱이나 웹사이트를 선택하면 앱이 이를 열고, 붙여넣기는 사용자가 직접 합니다. 자동으로 전송되지 않습니다. 붙여넣은 내용에는 해당 서비스의 개인정보 처리방침이 적용됩니다.",
+        "• 클라우드 동기화(기본값 꺼짐): 켜고 직접 운영하는 WebDAV 서버(Nextcloud, Koofr 등)를 입력하면 건강 요약은 그 주소로만 업로드됩니다. 서버 비밀번호는 기기의 iOS 키체인에 저장됩니다.",
+        "• 날씨 정보: 환경 보정을 켜고 실외를 선택한 경우에만 현재 위치를 Apple WeatherKit에 보내 날씨를 가져옵니다. 앱은 위치를 보관하지 않습니다.",
+        "• Apple Watch: iPhone은 Apple의 WatchConnectivity를 통해 페어링된 Apple Watch로 건강 상태 스냅샷을 보냅니다."
+      ]],
+      ["구매", ["전체 이용권은 Apple App Store가 처리하는 1회 구매입니다. 앱은 구매가 유효한지만 확인하며 결제 정보에는 접근하지 않습니다."]],
+      ["기기에 저장되는 데이터", ["설정, 사용자가 확인한 분석 프로필, 내보내기 임시 파일은 기기에 저장되며 임시 파일은 자동으로 정리됩니다. 앱을 삭제하면 해당 데이터도 삭제됩니다. Apple 건강에 있는 데이터는 계속 건강 앱에서 관리할 수 있습니다."]],
+      ["의료 관련 안내", ["분석, 점수, 요약은 개인 참고용이며 의학적 조언이나 진단이 아닙니다."]],
+      ["아동", ["이 앱은 아동을 대상으로 하지 않으며 누구의 정보도 의도적으로 수집하지 않습니다."]],
+      ["변경 및 문의", ["이 방침이 변경되면 새 시행일과 함께 이 페이지에 게시합니다. 문의: onenfiction@gmail.com"]]
+    ]
+  },
+  "fr": {
+    title: "Politique de confidentialité",
+    meta: "HealthExport Local · En vigueur le 30 octobre 2026",
+    s: [
+      ["Résumé", ["HealthExport Local est un outil local pour Apple Santé. Aucun compte n'est requis, l'app ne contient aucun SDK publicitaire ou d'analyse, et le développeur n'exploite aucun serveur. Le développeur ne collecte, ne reçoit, ne stocke, ne vend ni ne partage aucune de vos données."]],
+      ["Données de santé", [
+        "Avec votre autorisation, l'app lit les données d'Apple Santé (HealthKit) : activité, entraînements, fréquence cardiaque, sommeil, mesures corporelles, nutrition et autres catégories que vous autorisez.",
+        "Ces données sont lues et traitées sur votre appareil pour afficher des analyses, créer des exports et des résumés. L'app n'écrit ni ne modifie aucune donnée dans Apple Santé.",
+        "Les données de santé ne sont jamais utilisées à des fins publicitaires ou marketing et ne sont jamais vendues."
+      ]],
+      ["Quand des données quittent votre appareil", [
+        "Uniquement par des actions que vous lancez :",
+        "• Fichiers exportés : les fichiers CSV ou ZIP ne quittent l'appareil que lorsque vous choisissez une destination dans la feuille de partage, l'app Fichiers ou un dossier de sauvegarde choisi.",
+        "• Résumés pour l'IA : le résumé est copié dans le presse-papiers. Si vous choisissez une app ou un site d'IA, l'app l'ouvre et vous collez le texte vous-même. Rien n'est envoyé automatiquement. La politique de confidentialité de ce service s'applique à ce que vous collez.",
+        "• Synchronisation cloud (désactivée par défaut) : si vous l'activez avec votre propre serveur WebDAV (Nextcloud, Koofr, etc.), les résumés ne sont envoyés qu'à cette adresse. Le mot de passe est stocké dans le trousseau iOS de l'appareil.",
+        "• Contexte météo : uniquement si vous activez l'enrichissement environnemental en extérieur, votre position est envoyée à Apple WeatherKit pour obtenir la météo. L'app ne conserve pas votre position.",
+        "• Apple Watch : l'iPhone envoie un aperçu de l'état de santé à votre Apple Watch jumelée via WatchConnectivity d'Apple."
+      ]],
+      ["Achats", ["L'accès complet est un achat unique traité par l'App Store d'Apple. L'app sait seulement si l'achat est actif et n'a jamais accès à vos informations de paiement."]],
+      ["Données stockées sur l'appareil", ["Les réglages, le profil d'analyse que vous confirmez et les fichiers d'export temporaires restent sur votre appareil ; les fichiers temporaires sont supprimés automatiquement. Supprimer l'app supprime ses données. Les données d'Apple Santé restent gérées par vous dans l'app Santé."]],
+      ["Avertissement médical", ["Les analyses, scores et résumés sont fournis à titre indicatif et ne constituent ni un avis ni un diagnostic médical."]],
+      ["Enfants", ["L'app ne s'adresse pas aux enfants et ne collecte sciemment aucune information de quiconque."]],
+      ["Modifications et contact", ["En cas de modification, la nouvelle version sera publiée sur cette page avec une nouvelle date d'entrée en vigueur. Contact : onenfiction@gmail.com"]]
+    ]
+  },
+  "de": {
+    title: "Datenschutzerklärung",
+    meta: "HealthExport Local · Gültig ab 30. Oktober 2026",
+    s: [
+      ["Zusammenfassung", ["HealthExport Local ist ein lokales Werkzeug für Apple Health. Es ist kein Konto nötig, die App enthält keine Werbe- oder Analyse-SDKs, und der Entwickler betreibt keinen Server. Der Entwickler erhebt, empfängt, speichert, verkauft oder teilt keine deiner Daten."]],
+      ["Gesundheitsdaten", [
+        "Mit deiner Erlaubnis liest die App Daten aus Apple Health (HealthKit), etwa Aktivität, Trainings, Herzfrequenz, Schlaf, Körpermaße, Ernährung und weitere freigegebene Kategorien.",
+        "Die Daten werden auf deinem Gerät gelesen und verarbeitet, um Analysen anzuzeigen sowie Exporte und Zusammenfassungen zu erstellen. Die App schreibt nichts in Apple Health und ändert dort keine Daten.",
+        "Gesundheitsdaten werden nie für Werbung oder Marketing verwendet und nie verkauft."
+      ]],
+      ["Wann Daten dein Gerät verlassen", [
+        "Nur durch Aktionen, die du selbst startest:",
+        "• Exportierte Dateien: CSV- oder ZIP-Dateien verlassen das Gerät nur, wenn du im Teilen-Menü, in der Dateien-App oder in einem gewählten Sicherungsordner ein Ziel auswählst.",
+        "• KI-Zusammenfassungen: Die Zusammenfassung wird in die Zwischenablage kopiert. Wählst du eine KI-App oder Website, öffnet die App sie, und du fügst den Text selbst ein. Es wird nichts automatisch gesendet. Für eingefügte Inhalte gilt die Datenschutzerklärung dieses Dienstes.",
+        "• Cloud-Sync (standardmäßig aus): Wenn du ihn mit deinem eigenen WebDAV-Server (z. B. Nextcloud, Koofr) einschaltest, werden Zusammenfassungen nur an diese Adresse hochgeladen. Das Server-Passwort liegt im iOS-Schlüsselbund auf dem Gerät.",
+        "• Wetterkontext: Nur wenn du die Umgebungsanreicherung einschaltest und „Draußen“ wählst, wird dein aktueller Standort an Apple WeatherKit gesendet, um das Wetter abzurufen. Die App speichert den Standort nicht.",
+        "• Apple Watch: Das iPhone sendet über Apples WatchConnectivity einen Gesundheitsstatus an deine gekoppelte Apple Watch."
+      ]],
+      ["Käufe", ["Der Vollzugriff ist ein Einmalkauf, der über den Apple App Store abgewickelt wird. Die App erfährt nur, ob der Kauf aktiv ist, und sieht nie deine Zahlungsdaten."]],
+      ["Auf dem Gerät gespeicherte Daten", ["Einstellungen, das von dir bestätigte Analyseprofil und temporäre Exportdateien bleiben auf deinem Gerät; temporäre Dateien werden automatisch entfernt. Wenn du die App löschst, werden ihre Daten gelöscht. Daten in Apple Health verwaltest du weiterhin in der Health-App."]],
+      ["Medizinischer Hinweis", ["Analysen, Werte und Zusammenfassungen dienen nur der persönlichen Orientierung und sind keine medizinische Beratung oder Diagnose."]],
+      ["Kinder", ["Die App richtet sich nicht an Kinder und erhebt wissentlich von niemandem Informationen."]],
+      ["Änderungen und Kontakt", ["Bei Änderungen wird die neue Fassung mit neuem Gültigkeitsdatum auf dieser Seite veröffentlicht. Fragen: onenfiction@gmail.com"]]
+    ]
+  },
+  "es": {
+    title: "Política de privacidad",
+    meta: "HealthExport Local · Vigente desde el 30 de octubre de 2026",
+    s: [
+      ["Resumen", ["HealthExport Local es una herramienta local para Apple Salud. No requiere cuenta, no incluye SDK de publicidad ni de analítica y el desarrollador no tiene servidores. El desarrollador no recopila, recibe, almacena, vende ni comparte ninguno de tus datos."]],
+      ["Datos de salud", [
+        "Con tu permiso, la app lee datos de Apple Salud (HealthKit), como actividad, entrenamientos, frecuencia cardiaca, sueño, medidas corporales, nutrición y otras categorías que autorices.",
+        "Los datos se leen y procesan en tu dispositivo para mostrar análisis y crear exportaciones y resúmenes. La app no escribe ni modifica datos en Apple Salud.",
+        "Los datos de salud nunca se usan para publicidad o marketing y nunca se venden."
+      ]],
+      ["Cuándo salen datos de tu dispositivo", [
+        "Solo mediante acciones que tú inicias:",
+        "• Archivos exportados: los CSV o ZIP solo salen del dispositivo cuando eliges un destino en la hoja de compartir, la app Archivos o una carpeta de copia de seguridad elegida.",
+        "• Resúmenes para IA: el resumen se copia al portapapeles. Si eliges una app o web de IA, la app la abre y tú pegas el texto. No se envía nada automáticamente. A lo que pegues se aplica la política de privacidad de ese servicio.",
+        "• Sincronización en la nube (desactivada por defecto): si la activas con tu propio servidor WebDAV (Nextcloud, Koofr, etc.), los resúmenes solo se suben a esa dirección. La contraseña se guarda en el llavero de iOS del dispositivo.",
+        "• Contexto del tiempo: solo si activas el contexto ambiental y eliges exterior, tu ubicación se envía a Apple WeatherKit para obtener el tiempo. La app no guarda tu ubicación.",
+        "• Apple Watch: el iPhone envía un resumen del estado de salud a tu Apple Watch enlazado mediante WatchConnectivity de Apple."
+      ]],
+      ["Compras", ["El acceso completo es una compra única gestionada por el App Store de Apple. La app solo sabe si la compra está activa y nunca ve tus datos de pago."]],
+      ["Datos guardados en el dispositivo", ["Los ajustes, el perfil de análisis que confirmes y los archivos temporales de exportación se guardan en tu dispositivo; los temporales se eliminan automáticamente. Al borrar la app se borran sus datos. Los datos de Apple Salud siguen bajo tu control en la app Salud."]],
+      ["Aviso médico", ["Los análisis, puntuaciones y resúmenes son solo de referencia personal y no constituyen consejo ni diagnóstico médico."]],
+      ["Menores", ["La app no está dirigida a menores y no recopila a sabiendas información de nadie."]],
+      ["Cambios y contacto", ["Si esta política cambia, la nueva versión se publicará en esta página con una nueva fecha de vigencia. Contacto: onenfiction@gmail.com"]]
+    ]
+  },
+  "pt-BR": {
+    title: "Política de Privacidade",
+    meta: "HealthExport Local · Em vigor desde 30 de outubro de 2026",
+    s: [
+      ["Resumo", ["O HealthExport Local é uma ferramenta local para o app Saúde da Apple. Não exige conta, não contém SDKs de publicidade ou análise, e o desenvolvedor não mantém servidores. O desenvolvedor não coleta, recebe, armazena, vende nem compartilha nenhum dos seus dados."]],
+      ["Dados de saúde", [
+        "Com sua permissão, o app lê dados do Saúde (HealthKit), como atividade, treinos, frequência cardíaca, sono, medidas corporais, nutrição e outras categorias que você autorizar.",
+        "Os dados são lidos e processados no seu dispositivo para mostrar análises e criar exportações e resumos. O app não grava nem altera dados no Saúde.",
+        "Dados de saúde nunca são usados para publicidade ou marketing e nunca são vendidos."
+      ]],
+      ["Quando os dados saem do seu dispositivo", [
+        "Somente por ações que você inicia:",
+        "• Arquivos exportados: CSV ou ZIP só saem do dispositivo quando você escolhe um destino na folha de compartilhamento, no app Arquivos ou em uma pasta de backup escolhida.",
+        "• Resumos para IA: o resumo é copiado para a área de transferência. Se você escolher um app ou site de IA, o app o abre e você mesmo cola o texto. Nada é enviado automaticamente. A política de privacidade desse serviço se aplica ao que você colar.",
+        "• Sincronização na nuvem (desativada por padrão): ao ativá-la com seu próprio servidor WebDAV (Nextcloud, Koofr etc.), os resumos são enviados apenas para esse endereço. A senha fica no Porta-chaves do iOS no dispositivo.",
+        "• Contexto do clima: somente se você ativar o contexto ambiental e escolher ao ar livre, sua localização é enviada ao Apple WeatherKit para obter o clima. O app não guarda sua localização.",
+        "• Apple Watch: o iPhone envia um resumo do estado de saúde ao seu Apple Watch emparelhado pelo WatchConnectivity da Apple."
+      ]],
+      ["Compras", ["O Acesso Completo é uma compra única processada pela App Store da Apple. O app sabe apenas se a compra está ativa e nunca vê seus dados de pagamento."]],
+      ["Dados armazenados no dispositivo", ["Ajustes, o perfil de análise que você confirmar e arquivos temporários de exportação ficam no seu dispositivo; os temporários são removidos automaticamente. Apagar o app apaga seus dados. Os dados no Saúde continuam sob seu controle no app Saúde."]],
+      ["Aviso médico", ["Análises, pontuações e resumos são apenas para referência pessoal e não são aconselhamento nem diagnóstico médico."]],
+      ["Crianças", ["O app não é direcionado a crianças e não coleta intencionalmente informações de ninguém."]],
+      ["Alterações e contato", ["Se esta política mudar, a nova versão será publicada nesta página com nova data de vigência. Contato: onenfiction@gmail.com"]]
+    ]
+  },
+  "it": {
+    title: "Informativa sulla privacy",
+    meta: "HealthExport Local · In vigore dal 30 ottobre 2026",
+    s: [
+      ["Sintesi", ["HealthExport Local è uno strumento locale per Salute di Apple. Non richiede un account, non contiene SDK pubblicitari o di analisi e lo sviluppatore non gestisce server. Lo sviluppatore non raccoglie, riceve, conserva, vende o condivide alcun tuo dato."]],
+      ["Dati sanitari", [
+        "Con il tuo permesso, l'app legge i dati di Salute (HealthKit), come attività, allenamenti, frequenza cardiaca, sonno, misure corporee, nutrizione e altre categorie che autorizzi.",
+        "I dati vengono letti ed elaborati sul dispositivo per mostrare analisi e creare esportazioni e riepiloghi. L'app non scrive né modifica dati in Salute.",
+        "I dati sanitari non vengono mai usati per pubblicità o marketing e non vengono mai venduti."
+      ]],
+      ["Quando i dati lasciano il dispositivo", [
+        "Solo tramite azioni che avvii tu:",
+        "• File esportati: i file CSV o ZIP lasciano il dispositivo solo quando scegli una destinazione nel foglio di condivisione, nell'app File o in una cartella di backup scelta.",
+        "• Riepiloghi per l'IA: il riepilogo viene copiato negli appunti. Se scegli un'app o un sito di IA, l'app lo apre e incolli tu il testo. Nulla viene inviato automaticamente. A ciò che incolli si applica l'informativa di quel servizio.",
+        "• Sincronizzazione cloud (disattivata per impostazione predefinita): se la attivi con il tuo server WebDAV (Nextcloud, Koofr ecc.), i riepiloghi vengono caricati solo a quell'indirizzo. La password è salvata nel portachiavi iOS del dispositivo.",
+        "• Contesto meteo: solo se attivi l'arricchimento ambientale e scegli all'aperto, la tua posizione viene inviata ad Apple WeatherKit per ottenere il meteo. L'app non conserva la posizione.",
+        "• Apple Watch: l'iPhone invia un'istantanea dello stato di salute al tuo Apple Watch abbinato tramite WatchConnectivity di Apple."
+      ]],
+      ["Acquisti", ["L'accesso completo è un acquisto una tantum gestito dall'App Store di Apple. L'app sa solo se l'acquisto è attivo e non vede mai i tuoi dati di pagamento."]],
+      ["Dati salvati sul dispositivo", ["Impostazioni, profilo di analisi confermato e file temporanei di esportazione restano sul dispositivo; i file temporanei vengono eliminati automaticamente. Eliminando l'app si eliminano i suoi dati. I dati in Salute restano gestiti da te nell'app Salute."]],
+      ["Avvertenza medica", ["Analisi, punteggi e riepiloghi sono solo un riferimento personale e non costituiscono consulenza o diagnosi medica."]],
+      ["Minori", ["L'app non è rivolta ai minori e non raccoglie consapevolmente informazioni da nessuno."]],
+      ["Modifiche e contatti", ["In caso di modifiche, la nuova versione sarà pubblicata su questa pagina con una nuova data di entrata in vigore. Contatti: onenfiction@gmail.com"]]
+    ]
+  }
+};
+
+const ALIASES = { "zh": "zh-Hans", "zh-cn": "zh-Hans", "zh-tw": "zh-Hant", "zh-hk": "zh-Hant", "pt": "pt-BR", "en-us": "en", "en-gb": "en", "en-au": "en", "en-ca": "en", "fr-fr": "fr", "fr-ca": "fr", "de-de": "de", "es-es": "es", "es-mx": "es" };
+
+function resolve(code) {
+  if (!code) return null;
+  const lower = code.toLowerCase();
+  for (const key of Object.keys(T)) if (key.toLowerCase() === lower) return key;
+  if (ALIASES[lower]) return ALIASES[lower];
+  const base = lower.split("-")[0];
+  if (base === "zh") return /hant|tw|hk|mo/.test(lower) ? "zh-Hant" : "zh-Hans";
+  return T[base] ? base : (ALIASES[base] || null);
+}
+
+function el(tag, text) { const n = document.createElement(tag); n.textContent = text; return n; }
+
+function render(lang) {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.title = t.title + " · HealthExport Local";
+  document.getElementById("title").textContent = t.title;
+  document.getElementById("meta").textContent = t.meta;
+  const content = document.getElementById("content");
+  content.replaceChildren();
+  for (const [heading, paras] of t.s) {
+    const sec = document.createElement("section");
+    sec.appendChild(el("h2", heading));
+    const bullets = paras.filter(p => p.startsWith("•") || p.startsWith("・"));
+    paras.filter(p => !bullets.includes(p)).forEach(p => sec.appendChild(el("p", p)));
+    if (bullets.length) {
+      const ul = document.createElement("ul");
+      bullets.forEach(b => ul.appendChild(el("li", b.replace(/^[•・]\s*/, ""))));
+      sec.appendChild(ul);
+    }
+    content.appendChild(sec);
+  }
+  const nav = document.getElementById("langs");
+  nav.replaceChildren();
+  for (const [code, name] of LANGS) {
+    const a = el("a", name);
+    a.href = "?lang=" + code;
+    a.hreflang = code;
+    if (code === lang) a.setAttribute("aria-current", "true");
+    nav.appendChild(a);
+  }
+}
+
+const param = new URLSearchParams(location.search).get("lang");
+const lang = resolve(param) || (navigator.languages || [navigator.language]).map(resolve).find(Boolean) || "en";
+render(lang);
+</script>
+</body>
+</html>
